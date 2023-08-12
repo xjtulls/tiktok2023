@@ -1,9 +1,9 @@
 package controller
 
 import (
+	"github.com/RaymondCode/simple-demo/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"sync/atomic"
 )
 
 // usersLoginInfo use map to store user info, and key is username+password for demo
@@ -33,28 +33,9 @@ type UserResponse struct {
 }
 
 func Register(c *gin.Context) {
-	username := c.Query("username")
-	password := c.Query("password")
-
-	token := username + password
-
-	if _, exist := usersLoginInfo[token]; exist {
-		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "User already exist"},
-		})
-	} else {
-		atomic.AddInt64(&userIdSequence, 1)
-		newUser := User{
-			Id:   userIdSequence,
-			Name: username,
-		}
-		usersLoginInfo[token] = newUser
-		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 0},
-			UserId:   userIdSequence,
-			Token:    username + password,
-		})
-	}
+	userService := service.UserService{}
+	resp, _ := userService.HandleRegister(c)
+	c.JSON(http.StatusOK, resp)
 }
 
 func Login(c *gin.Context) {
