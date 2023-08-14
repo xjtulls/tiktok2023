@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +29,9 @@ type RegisterAndLoginResopnse struct {
 type GetUserResponse struct {
 	Response
 	model.User
+	Avatar          string `json:"avatar"`
+	Signature       string `json:"signature"`
+	BackgroundImage string `json:"background_image"`
 }
 
 func (u UserService) HandleRegister(c *gin.Context) (resp *RegisterAndLoginResopnse, err error) {
@@ -104,6 +108,28 @@ func (u UserService) HandleLogin(c *gin.Context) (resp *RegisterAndLoginResopnse
 	}, nil
 }
 
-func HandleGetUser(c *gin.Context) {
-
+func HandleGetUser(c *gin.Context) (resp *GetUserResponse, err error) {
+	token := c.Query("token")
+	userId := c.Query("user_id")
+	// 判断token
+	if len(token) == 0 {
+		return nil, errors.New("token无效")
+	}
+	user := model.TableUser{}
+	if err := model.Db.Where("id = ?", userId).First(&user).Error; err != nil {
+		return nil, err
+	}
+	// 到这里找到了
+	return &GetUserResponse{
+		Response: Response{
+			StatusCode: 0,
+		},
+		User: model.User{
+			Id:   int64(user.ID),
+			Name: user.Name,
+		},
+		Avatar:          user.Avatar,
+		Signature:       user.Signature,
+		BackgroundImage: user.BackgroundImage,
+	}, nil
 }
