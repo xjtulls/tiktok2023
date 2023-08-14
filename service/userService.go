@@ -30,7 +30,7 @@ func (u UserService) HandleRegister(c *gin.Context) (resp *RegisterResopnse, err
 	username := c.Query("username")
 	password := c.Query("password")
 	token := username + password
-	user := model.User{
+	user := model.TableUser{
 		Name:            username,
 		Avatar:          AvaterDefault,
 		Signature:       SignatureDefault,
@@ -44,7 +44,7 @@ func (u UserService) HandleRegister(c *gin.Context) (resp *RegisterResopnse, err
 				StatusCode: 1,
 				StatusMsg:  fmt.Sprintf("%v", err),
 			},
-			UserID: -1,
+			UserID: 0,
 			Token:  "",
 		}, err
 	}
