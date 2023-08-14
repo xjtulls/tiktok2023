@@ -1,7 +1,7 @@
 package model
 
-type User struct {
-	ID              uint64 `json:id gorm:"primaryKey"`
+type Table_User struct {
+	ID              uint64 `json:"id" gorm:"primaryKey"`
 	Name            string `json:"name"`
 	Password        string `json:"password"`
 	Avatar          string `json:"avatar"`
@@ -10,6 +10,6 @@ type User struct {
 }
 
 // TableName 修改表名映射
-func (user User) TableName() string {
+func (user Table_User) TableName() string {
 	return "users"
 }
