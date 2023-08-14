@@ -21,8 +21,13 @@ type Response struct {
 
 type RegisterAndLoginResopnse struct {
 	Response
-	UserID uint64 `json:"userId"`
+	UserId uint64 `json:"userId"`
 	Token  string `json:"token"`
+}
+
+type GetUserResponse struct {
+	Response
+	model.User
 }
 
 func (u UserService) HandleRegister(c *gin.Context) (resp *RegisterAndLoginResopnse, err error) {
@@ -45,7 +50,7 @@ func (u UserService) HandleRegister(c *gin.Context) (resp *RegisterAndLoginResop
 				StatusCode: 1,
 				StatusMsg:  model.NotExitsEoor,
 			},
-			UserID: 0,
+			UserId: 0,
 			Token:  "",
 		}, err
 	}
@@ -58,7 +63,7 @@ func (u UserService) HandleRegister(c *gin.Context) (resp *RegisterAndLoginResop
 			StatusCode: 0,
 			//StatusMsg:  "",
 		},
-		UserID: user.ID,
+		UserId: user.ID,
 		Token:  token,
 	}, nil
 }
@@ -76,7 +81,7 @@ func (u UserService) HandleLogin(c *gin.Context) (resp *RegisterAndLoginResopnse
 				StatusCode: 1,
 				StatusMsg:  model.NotExitsEoor,
 			},
-			UserID: 0,
+			UserId: 0,
 			Token:  "",
 		}, err
 	}
@@ -94,7 +99,11 @@ func (u UserService) HandleLogin(c *gin.Context) (resp *RegisterAndLoginResopnse
 			StatusCode: 0,
 			StatusMsg:  "登录成功",
 		},
-		UserID: user.ID,
+		UserId: user.ID,
 		Token:  token,
 	}, nil
+}
+
+func HandleGetUser(c *gin.Context) {
+
 }
