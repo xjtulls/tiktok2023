@@ -47,7 +47,7 @@ func Login(c *gin.Context) {
 
 func UserInfo(c *gin.Context) {
 	userService := service.UserService{}
-	resp, err := userService.HandleRegister(c)
+	resp, err := userService.HandleGetUser(c)
 	if err != nil {
 		c.JSON(http.StatusOK, model.Response{
 			StatusCode: 1,

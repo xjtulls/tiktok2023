@@ -108,7 +108,7 @@ func (u UserService) HandleLogin(c *gin.Context) (resp *RegisterAndLoginResopnse
 	}, nil
 }
 
-func HandleGetUser(c *gin.Context) (resp *GetUserResponse, err error) {
+func (u UserService) HandleGetUser(c *gin.Context) (resp *GetUserResponse, err error) {
 	token := c.Query("token")
 	userId := c.Query("user_id")
 	// 判断token
